@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ARC RAIDERS — полная инструкция для дуо-новичков</title>
+<meta name="description" content="Полевая инструкция для игры в ARC Raiders в дуо: loadout, Dam, движение вдвоём, PvP, ARC, extract, Workshop, skills, stash. Версия 1.0, 10.08.2026.">
+<meta name="theme-color" content="#0E1216">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARC RAIDERS — полная инструкция для дуо-новичков">
+<meta property="og:description" content="Как перестать терять всё подряд и перейти к стабильным экстрактам, Workshop и PvP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0E1216; --panel:#151B21; --panel2:#1B232A; --raise:#212B33;
+  --line:#2A343D; --line-soft:#202932;
+  --text:#DDD6C9; --dim:#8D949C; --dimmer:#6B727A;
+  --amber:#E8A33A; --amber-dim:#8A6420; --cyan:#66B3C4; --rust:#C4573C;
+  --fs:16px; --rail:270px;
+  --disp:'Oswald','Arial Narrow',Impact,sans-serif;
+  --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--body);font-size:var(--fs);line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background:
+    radial-gradient(900px 500px at 82% -8%, rgba(232,163,58,.07), transparent 60%),
+    radial-gradient(700px 500px at 8% 105%, rgba(102,179,196,.05), transparent 60%);
+}
+a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(102,179,196,.32)}
+a:hover{border-bottom-color:var(--cyan)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+/* ---------- top bar ---------- */
+.top{
+  position:sticky;top:0;z-index:60;
+  background:rgba(14,18,22,.94);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.top-in{display:flex;align-items:center;gap:12px;padding:9px 16px;max-width:1500px;margin:0 auto}
+.brand{display:flex;align-items:baseline;gap:9px;flex:0 0 auto}
+.brand b{font-family:var(--disp);font-weight:600;letter-spacing:.14em;font-size:15px;color:var(--amber);text-transform:uppercase}
+.brand span{font-family:var(--mono);font-size:10px;color:var(--dimmer);letter-spacing:.08em}
+.search{position:relative;flex:1 1 auto;max-width:520px}
+.search input{
+  width:100%;padding:9px 74px 9px 34px;border-radius:3px;
+  background:var(--panel2);border:1px solid var(--line);color:var(--text);
+  font-family:var(--body);font-size:15px;
+}
+.search input::placeholder{color:var(--dimmer)}
+.search input:focus{border-color:var(--amber);background:#0C1115}
+.search .mag{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dimmer);font-size:14px;pointer-events:none}
+.search .hint{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:10px;color:var(--dimmer);
+  border:1px solid var(--line);border-radius:3px;padding:2px 6px;pointer-events:none;
+}
+.search .hint.count{color:var(--amber);border-color:var(--amber-dim)}
+.tools{display:flex;gap:6px;flex:0 0 auto;margin-left:auto}
+.btn{
+  background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+  padding:7px 10px;border-radius:3px;cursor:pointer;white-space:nowrap;
+}
+.btn:hover{color:var(--text);border-color:var(--dim)}
+.btn.on{color:var(--amber);border-color:var(--amber-dim);background:rgba(232,163,58,.08)}
+.btn-burger{display:none}
+
+/* ---------- quick chips ---------- */
+.chips{border-bottom:1px solid var(--line-soft);background:var(--panel);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.chips-in{display:flex;gap:7px;padding:8px 16px;max-width:1500px;margin:0 auto;width:max-content;min-width:100%}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.03em;
+  padding:6px 11px;border-radius:99px;border:1px solid var(--line);
+  background:transparent;color:var(--dim);cursor:pointer;white-space:nowrap;
+}
+.chip:hover{color:var(--amber);border-color:var(--amber-dim)}
+
+/* ---------- layout ---------- */
+.wrap{display:flex;gap:0;max-width:1500px;margin:0 auto;position:relative;z-index:1}
+.rail{
+  width:var(--rail);flex:0 0 var(--rail);
+  position:sticky;top:104px;align-self:flex-start;
+  height:calc(100vh - 104px);overflow-y:auto;
+  padding:18px 10px 60px 16px;border-right:1px solid var(--line-soft);
+  scrollbar-width:thin;
+}
+.rail-h{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--dimmer);text-transform:uppercase;padding:0 8px 10px}
+.rail a{
+  display:flex;gap:9px;align-items:baseline;
+  padding:6px 8px;border-radius:3px;border:0;
+  color:var(--dim);font-size:13.5px;line-height:1.35;
+}
+.rail a:hover{background:var(--panel2);color:var(--text)}
+.rail a .n{font-family:var(--mono);font-size:10.5px;color:var(--dimmer);flex:0 0 20px}
+.rail a.active{background:rgba(232,163,58,.09);color:var(--amber);box-shadow:inset 2px 0 0 var(--amber)}
+.rail a.active .n{color:var(--amber)}
+.rail a.hidden{display:none}
+
+.main{flex:1 1 auto;min-width:0;padding:26px 34px 120px;max-width:920px}
+
+/* ---------- hero ---------- */
+.hero{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:8px}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--dimmer);text-transform:uppercase}
+.hero h1{
+  font-family:var(--disp);font-weight:600;text-transform:uppercase;
+  font-size:clamp(30px,5.4vw,52px);line-height:1.02;letter-spacing:.02em;
+  margin:8px 0 6px;color:var(--amber);
+}
+.hero h2{
+  font-family:var(--disp);font-weight:500;
+  font-size:clamp(15px,2.4vw,21px);letter-spacing:.1em;margin:0 0 12px;color:var(--text);
+}
+.hero p.lede{color:var(--dim);margin:0 0 18px;max-width:56ch}
+.stamp{font-family:var(--mono);font-size:11px;color:var(--dimmer);letter-spacing:.05em;margin-top:16px}
+
+/* ---------- sections ---------- */
+section{border-bottom:1px solid var(--line-soft);padding:6px 0 10px;scroll-margin-top:112px}
+section.hidden{display:none}
+.sec-h{
+  display:flex;align-items:center;gap:12px;width:100%;
+  background:none;border:0;padding:20px 0 12px;cursor:pointer;text-align:left;color:inherit;
+}
+.sec-h .num{
+  font-family:var(--mono);font-size:11px;color:var(--amber);
+  border:1px solid var(--amber-dim);border-radius:3px;padding:3px 6px;flex:0 0 auto;
+}
+.sec-h h3{
+  font-family:var(--disp);font-weight:500;letter-spacing:.005em;
+  font-size:clamp(18px,2.6vw,25px);line-height:1.16;margin:0;flex:1 1 auto;color:var(--text);
+}
+.sec-h .caret{color:var(--dimmer);font-size:12px;transition:transform .18s;flex:0 0 auto}
+.sec-h:hover h3{color:var(--amber)}
+section.collapsed .sec-h .caret{transform:rotate(-90deg)}
+section.collapsed .sec-body{display:none}
+.sec-body{padding-bottom:14px}
+
+h4{
+  font-family:var(--disp);font-weight:500;letter-spacing:.02em;
+  font-size:17px;color:var(--cyan);margin:26px 0 8px;
+}
+p{margin:0 0 13px}
+ul,ol{margin:0 0 14px;padding-left:0;list-style:none}
+ul li,ol li{position:relative;padding-left:22px;margin-bottom:9px}
+ul li::before{content:"";position:absolute;left:5px;top:.72em;width:6px;height:1px;background:var(--amber)}
+ol{counter-reset:o}
+ol li{counter-increment:o}
+ol li::before{content:counter(o);position:absolute;left:0;top:0;font-family:var(--mono);font-size:11px;color:var(--amber)}
+ul.check li{padding-left:30px}
+ul.check li::before{
+  content:"";position:absolute;left:0;top:.28em;width:15px;height:15px;
+  border:1px solid var(--line);border-radius:2px;background:var(--panel2);
+}
+.step{font-family:var(--mono);color:var(--amber);font-size:12px;margin-right:4px}
+
+/* ---------- callouts ---------- */
+.callout{
+  border:1px solid var(--line);border-left:3px solid var(--amber);
+  background:linear-gradient(90deg,rgba(232,163,58,.06),transparent 70%);
+  padding:13px 16px;margin:18px 0;border-radius:0 3px 3px 0;
+}
+.callout .lbl{
+  font-family:var(--disp);font-weight:500;text-transform:uppercase;letter-spacing:.13em;
+  font-size:12px;color:var(--amber);display:block;margin-bottom:5px;
+}
+.callout p:last-child{margin-bottom:0}
+.callout.warn{border-left-color:var(--rust);background:linear-gradient(90deg,rgba(196,87,60,.08),transparent 70%)}
+.callout.warn .lbl{color:var(--rust)}
+.callout.cool{border-left-color:var(--cyan);background:linear-gradient(90deg,rgba(102,179,196,.06),transparent 70%)}
+.callout.cool .lbl{color:var(--cyan)}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:3px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:14.5px}
+th{
+  background:var(--panel2);text-align:left;padding:10px 13px;
+  font-family:var(--disp);font-weight:500;letter-spacing:.02em;
+  font-size:14px;color:var(--cyan);border-bottom:1px solid var(--line);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--line-soft);vertical-align:top;line-height:1.5}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(255,255,255,.022)}
+td:first-child{color:var(--text);font-weight:600}
+
+/* ---------- figures ---------- */
+figure{margin:18px 0;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:var(--panel)}
+figure img{display:block;width:100%;height:auto;max-height:46vh;object-fit:contain;background:var(--panel2);cursor:zoom-in}
+figcaption{padding:9px 13px;font-size:12.5px;color:var(--dim);border-top:1px solid var(--line-soft);font-style:italic}
+body.no-img figure{display:none}
+.src{font-family:var(--mono);font-size:11.5px;color:var(--dimmer);margin:14px 0 4px;letter-spacing:.01em}
+.srclist{font-size:14px}
+.srclist li{margin-bottom:7px}
+
+mark{background:rgba(232,163,58,.28);color:#FFE6B8;border-radius:2px;padding:0 2px}
+.empty{padding:40px 4px;color:var(--dim);font-family:var(--mono);font-size:13px}
+.totop{
+  position:fixed;right:18px;bottom:18px;z-index:70;
+  width:44px;height:44px;border-radius:3px;display:none;place-items:center;
+  background:var(--panel2);border:1px solid var(--line);color:var(--amber);cursor:pointer;font-size:15px;
+}
+.totop.show{display:grid}
+.scrim{display:none}
+.lbx{position:fixed;inset:0;z-index:200;background:rgba(6,9,11,.96);display:none;align-items:center;justify-content:center;padding:14px;cursor:zoom-out}
+.lbx.open{display:flex}
+.lbx img{max-width:100%;max-height:100%;object-fit:contain;border:1px solid var(--line)}
+.lbx .close{position:absolute;top:12px;right:14px;font-family:var(--mono);font-size:12px;color:var(--dim);border:1px solid var(--line);background:var(--panel2);border-radius:3px;padding:7px 11px;cursor:pointer}
+
+@media(max-width:960px){
+  .rail{
+    position:fixed;top:0;left:0;height:100vh;width:290px;z-index:90;
+    background:var(--panel);border-right:1px solid var(--line);
+    transform:translateX(-102%);transition:transform .22s ease;padding-top:20px;
+  }
+  body.nav-open .rail{transform:none}
+  body.nav-open .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:80}
+  .btn-burger{display:block}
+  .main{padding:20px 16px 110px}
+  .brand span{display:none}
+}
+@media(max-width:620px){
+  .top-in{flex-wrap:wrap;padding:8px 12px;gap:8px}
+  .search{order:3;flex:1 0 100%;max-width:none}
+  .tools .btn-txt{display:none}
+  .brand b{font-size:13px}
+}
+@media print{
+  .top,.chips,.rail,.totop{display:none}
+  body{background:#fff;color:#000}
+  section.collapsed .sec-body{display:block}
+  .main{max-width:none;padding:0}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-in">
+    <button class="btn btn-burger" id="burger" aria-label="Оглавление">☰</button>
+    <div class="brand"><b>ARC Raiders</b><span>DUO / v1.0</span></div>
+    <div class="search">
+      <span class="mag">⌕</span>
+      <input id="q" type="search" placeholder="Поиск по инструкции…" autocomplete="off" spellcheck="false" aria-label="Поиск по инструкции">
+      <span class="hint" id="hint">/</span>
+    </div>
+    <div class="tools">
+      <button class="btn" id="fdown" title="Мельче шрифт">A−</button>
+      <button class="btn" id="fup" title="Крупнее шрифт">A+</button>
+      <button class="btn" id="imgt" title="Показать или скрыть скриншоты">🖼<span class="btn-txt"> Картинки</span></button>
+      <button class="btn" id="fold" title="Свернуть или развернуть все разделы">▤<span class="btn-txt"> Свернуть</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="chips">
+  <div class="chips-in">
+    <button class="chip" data-go="s1">10 правил</button>
+    <button class="chip" data-go="s4">Голосовой протокол</button>
+    <button class="chip" data-go="s5">Алгоритм контакта</button>
+    <button class="chip" data-go="s3">Приоритет лута</button>
+    <button class="chip" data-go="s6">Кого обходить</button>
+    <button class="chip" data-go="s8">Экстракт</button>
+    <button class="chip" data-go="s10">Маршрут Workshop</button>
+    <button class="chip" data-go="s16">После 3 смертей</button>
+    <button class="chip" data-go="s18">Чеклист перед PLAY</button>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="wrap">
+  <nav class="rail" id="rail">
+    <div class="rail-h">Разделы</div>
+    <a href="#s1"><span class="n">01</span>Если запомнить только десять правил</a>
+    <a href="#s2"><span class="n">02</span>Loadout: Free или Custom?</a>
+    <a href="#s3"><span class="n">03</span>Перед каждым рейдом: цель, маршрут, лимит жадности</a>
+    <a href="#s4"><span class="n">04</span>Как двигаться вдвоём</a>
+    <a href="#s5"><span class="n">05</span>PvP: когда драться, а когда уходить</a>
+    <a href="#s6"><span class="n">06</span>ARC: кого вам сейчас убивать, а кого обходить</a>
+    <a href="#s7"><span class="n">07</span>Как безопасно учиться убивать ARC</a>
+    <a href="#s8"><span class="n">08</span>Экстракт — отдельная операция</a>
+    <a href="#s9"><span class="n">09</span>Workshop: где крафт и где улучшения</a>
+    <a href="#s10"><span class="n">10</span>Маршрут Workshop на первые часы</a>
+    <a href="#s11"><span class="n">11</span>Эти предметы научитесь узнавать глазами</a>
+    <a href="#s12"><span class="n">12</span>Два loadout-профиля вместо "одного лучшего билда"</a>
+    <a href="#s13"><span class="n">13</span>Skills: сначала мобильность, потому что вы пока учитесь выживать</a>
+    <a href="#s14"><span class="n">14</span>Stash, продажа и Scrappy</a>
+    <a href="#s15"><span class="n">15</span>Конкретный маршрут на первые ~10 часов</a>
+    <a href="#s16"><span class="n">16</span>Что делать после 3 смертей подряд</a>
+    <a href="#s17"><span class="n">17</span>Когда вы готовы специально учить PvP</a>
+    <a href="#s18"><span class="n">18</span>Чеклист дуо перед кнопкой PLAY</a>
+  </nav>
+
+  <main class="main" id="main">
+
+    <div class="hero" id="hero">
+      <div class="eyebrow">Полевая инструкция</div>
+      <h1>ARC RAIDERS</h1>
+      <h2>ПОЛНАЯ ИНСТРУКЦИЯ ДЛЯ ДУО-НОВИЧКОВ</h2>
+      <p class="lede">Как перестать терять всё подряд и перейти к стабильным экстрактам, Workshop и PvP</p>
+      <figure><img data-img="image1" alt="ARC Raiders"></figure>
+      <div class="callout">
+        <span class="lbl">ЦЕЛЬ ПЕРВЫХ ~10 ЧАСОВ</span>
+        <p>Не "убивать больше", а построить экономику, знать Dam, научиться выходить и сделать смерть дешёвой. После этого PvP перестаёт тормозить прогресс.</p>
+      </div>
+      <div class="stamp">Версия 1.0 • актуализировано под состояние игры на 10.08.2026</div>
+    </div>
+
+    <section id="s1">
+      <button class="sec-h"><span class="num">01</span><h3>Если запомнить только десять правил</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <ul>
+          <li>Перед рейдом формулируйте одну конкретную цель: квест + 1 апгрейд Workshop.</li>
+          <li>Первые рейды - Dam Battlegrounds; Free Loadout используйте как экономический reset.</li>
+          <li>Free Loadout НЕ имеет Safe Pocket. За конкретным blueprint/quest item лучше дешёвый Custom.</li>
+          <li>Не открывайте PvP автоматически. Если бой ничего не даёт - обойдите.</li>
+          <li>Не стойте вдвоём в одной двери/за одним ящиком: создавайте два угла.</li>
+          <li>Один лутает - второй смотрит. Один пересекает открытую зону - второй прикрывает.</li>
+          <li>ARC - это сирена для других игроков. То, что можно обойти, часто лучше обойти.</li>
+          <li>Получили важное - выходите. Полный рюкзак не является обязательным условием хорошего рейда.</li>
+          <li>После 2-3 смертей не "доставайте топовый сет". Вернитесь в Free/дешёвый Custom и восстановите экономику.</li>
+          <li>После смерти разбирайте решение и позицию, а не только оружие.</li>
+        </ul>
+        <div class="callout cool">
+          <span class="lbl">БЫСТРЫЙ ЦИКЛ</span>
+          <p>Цель → дешёвый loadout → маршрут → нужный лут → Safe Pocket (если есть) → ранний extract → квест/Workshop/stash → следующая цель.</p>
+        </div>
+        <h4>Что считается хорошим рейдом</h4>
+        <p>Рейд хорош, если аккаунт стал сильнее: выполнен квест, вынесен редкий компонент, открыт рецепт, накоплены материалы или просто восстановлена экономика. Ноль убийств - нормальный результат.</p>
+        <p class="src">Основа: ARC Raiders Wiki — Getting Started; Embark — текущая система matchmaking.</p>
+      </div>
+    </section>
+
+    <section id="s2">
+      <button class="sec-h"><span class="num">02</span><h3>Loadout: Free или Custom?</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <figure>
+          <img data-img="image2" alt="Скриншот интерфейса Loadout">
+          <figcaption>Скриншот интерфейса Loadout. Источник исходного скриншота: Epic Games Store beginner guide.</figcaption>
+        </figure>
+        <div class="tw"><table>
+          <thead><tr><th>Режим</th><th>Что получаете</th><th>Когда брать</th></tr></thead>
+          <tbody>
+            <tr><td>FREE LOADOUT</td><td>Бесплатный случайный low-tier комплект; 14 inventory; Light Shield; 4 Quick Use; 2 weapon slots; Safe Pocket = 0</td><td>После серии смертей; обычный фарм; изучение карты</td></tr>
+            <tr><td>ДЕШЁВЫЙ CUSTOM</td><td>Ваш дешёвый комплект; Safe Pocket зависит от augment. Даже без loadout custom даёт 1 Safe Pocket</td><td>Ищете конкретный blueprint / редкий quest item</td></tr>
+            <tr><td>COMBAT CUSTOM</td><td>Combat augment + более сильный shield/оружие</td><td>Опасный квест или сознательная PvP-тренировка</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout warn">
+          <span class="lbl">ВАЖНО</span>
+          <p>Мой ранний совет "Free Loadout → найденный blueprint сразу в Safe Pocket" был неверен: у Free Loadout Safe Pocket отсутствует. В этой версии это исправлено.</p>
+        </div>
+        <p class="src">Проверка: arcraiders.wiki/wiki/Loadout (ред. 21.06.2026).</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <button class="sec-h"><span class="num">03</span><h3>Перед каждым рейдом: цель, маршрут, лимит жадности</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <h4>Приоритет лута</h4>
+        <p><span class="step">1.</span> Неизученный Blueprint</p>
+        <p><span class="step">2.</span> Quest item</p>
+        <p><span class="step">3.</span> Tracked resource для текущего Workshop upgrade</p>
+        <p><span class="step">4.</span> ARC Powercell / ARC Alloy / редкий Driver/Core</p>
+        <p><span class="step">5.</span> Дорогой loot / trinket</p>
+        <p><span class="step">6.</span> Всё остальное</p>
+        <div class="callout">
+          <span class="lbl">ПРАВИЛО ВЫХОДА</span>
+          <p>Если вы уже вынесли то, ради чего заходили, каждый дополнительный контейнер - новая ставка этим прогрессом. Не путайте "можно ещё полутать" с "это рационально".</p>
+        </div>
+        <h4>Dam как учебная карта</h4>
+        <p>Первые часы используйте Dam для формирования карты в голове: запомните не весь ландшафт, а 2-3 безопасных связки "spawn/POI → промежуточное укрытие → extract". На Dam экстракты - характерные bunker/lift-точки; шум вызова лифта привлекает внимание.</p>
+        <p>Не затягивайте рейд только ради заполнения последних слотов. По мере закрытия лифтов оставшиеся игроки естественно концентрируются вокруг доступных выходов.</p>
+      </div>
+    </section>
+
+    <section id="s4">
+      <button class="sec-h"><span class="num">04</span><h3>Как двигаться вдвоём</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <div class="callout cool">
+          <span class="lbl">БАЗОВАЯ ГЕОМЕТРИЯ</span>
+          <p>Не плечом к плечу. Ориентир - 10-20 м, но дистанцию меняйте под видимость и укрытия. В комнате можете быть ближе; на открытом пространстве - шире.</p>
+        </div>
+        <h4>Перемещение</h4>
+        <ul>
+          <li>Игрок 1 пересекает открытую зону → Игрок 2 держит направление угрозы.</li>
+          <li>Игрок 1 лутает → Игрок 2 контролирует двери/окна/подходы. Потом меняетесь.</li>
+          <li>Первого заметили → второй не "прилипает", а ищет другой угол.</li>
+          <li>Слышите контакт → сначала называете направление и укрытие, потом стреляете.</li>
+        </ul>
+        <h4>Минимальный голосовой протокол</h4>
+        <div class="tw"><table>
+          <thead><tr><th>Ситуация</th><th>Короткая фраза</th></tr></thead>
+          <tbody>
+            <tr><td>Враг</td><td>"Игрок, 2 часа, за белым грузовиком"</td></tr>
+            <tr><td>ARC</td><td>"Hornet над дорогой, обходим справа"</td></tr>
+            <tr><td>Смена позиции</td><td>"Я фланг справа, не пушь 5 секунд"</td></tr>
+            <tr><td>Отход</td><td>"Сбрасываем бой, назад в здание"</td></tr>
+            <tr><td>Рес</td><td>"Не ресай, он держит тело"</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Если напарника положили</h4>
+        <p>Не ресайте автоматически. Сначала смените угол, найдите врага и заставьте его реагировать. Рес под прицелом часто превращает одну ошибку в вайп дуо.</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <button class="sec-h"><span class="num">05</span><h3>PvP: когда драться, а когда уходить</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <h4>Перед первым выстрелом</h4>
+        <p>Задайте один вопрос: "Что мы получаем от этого боя?" Если ответ только "можем попробовать убить", для новичков это слабая причина. Хорошие причины: враг блокирует extract, вы защищаетесь, у вас явное позиционное преимущество или это специально выбранный PvP-рейд.</p>
+        <div class="callout">
+          <span class="lbl">ТЕКУЩИЙ MATCHMAKING</span>
+          <p>На 10.08.2026 Embark отдельно отслеживает playstyle для Solo/Duo/Trio. В тесте 1.39.0 только драки, которые ваша squad начинает первой, влияют на playstyle estimate; защита после первого урона от другой squad не влияет. Это тест и может измениться.</p>
+        </div>
+        <h4>Алгоритм контакта</h4>
+        <p><span class="step">1)</span> УКРЫТИЕ — перестаньте принимать бесплатный урон.</p>
+        <p><span class="step">2)</span> ИНФОРМАЦИЯ — сколько их, где, кто видит кого.</p>
+        <p><span class="step">3)</span> РАЗНЕСТИ УГЛЫ — один держит внимание, второй смещается.</p>
+        <p><span class="step">4)</span> РЕШЕНИЕ — добиваем / давим / уходим.</p>
+        <p><span class="step">5)</span> ПОСЛЕ КОНТАКТА — не лутать тело мгновенно; слушать third party.</p>
+        <p class="src">Официально: arcraiders.com/news/live-update-1-39-0 и /live-update-1-36-0.</p>
+      </div>
+    </section>
+
+    <section id="s6">
+      <button class="sec-h"><span class="num">06</span><h3>ARC: кого вам сейчас убивать, а кого обходить</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <figure>
+          <img data-img="image1" alt="Игровые скриншоты ARC">
+          <figcaption>Игровые скриншоты: Shacknews, GamesRadar/PC Gamer, MetaForge и др.; используются для распознавания врагов.</figcaption>
+        </figure>
+        <div class="tw"><table>
+          <thead><tr><th>ARC</th><th>Что делать новичку</th><th>Что запомнить</th></tr></thead>
+          <tbody>
+            <tr><td>Wasp</td><td>Можно убивать по одному</td><td>Ломайте thrusters. Нужен Wasp Driver для Gunsmith 2.</td></tr>
+            <tr><td>Hornet</td><td>Можно, но только из укрытия</td><td>Задние thrusters не бронированы; dodge на звуковой cue. Hornet Driver нужен Gear Bench 2.</td></tr>
+            <tr><td>Bastion</td><td>Пока обходить</td><td>Жёлтые суставы ног + rear canister; часто с Wasp/Hornet.</td></tr>
+            <tr><td>Bombardier</td><td>Пока обходить</td><td>Миномёт; сначала Spotters; жёлтые joints + rear canister.</td></tr>
+            <tr><td>Queen</td><td>Не лезть</td><td>Boss-tier: armour plates → red core; legs weak points.</td></tr>
+            <tr><td>Matriarch</td><td>Не лезть</td><td>Boss-tier; та же логика weak points, но не цель первых часов.</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="s7">
+      <button class="sec-h"><span class="num">07</span><h3>Как безопасно учиться убивать ARC</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <h4>Wasp / Hornet</h4>
+        <ul>
+          <li>Сначала укрытие, затем стрельба. Не стойте на открытом месте, пока "дожимаете".</li>
+          <li>Разбирайте одного. Если агрятся несколько - уходите в здание/за hard cover.</li>
+          <li>Wasp: выбивайте thrusters.</li>
+          <li>Hornet: задние thrusters уязвимы; на звуковой сигнал атаки готовьте Dodge Roll.</li>
+          <li>После убийства быстро заберите Driver и смените позицию — стрельба уже могла привлечь людей.</li>
+        </ul>
+        <h4>Bastion / Bombardier</h4>
+        <p>Это не "просто жирный моб". Они требуют времени, боеприпасов и создают огромный шумовой след. На раннем прогрессе вы почти всегда выигрываете больше, просто поменяв маршрут.</p>
+        <div class="callout cool">
+          <span class="lbl">PRACTICE RANGE</span>
+          <p>Тестируйте Ferro, Stitcher, recoil и дистанции там, где потраченные ammo/durability не переносятся обратно. Это дешевле, чем изучать каждую пушку ценой реального комплекта.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="s8">
+      <button class="sec-h"><span class="num">08</span><h3>Экстракт — отдельная операция</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <figure>
+          <img data-img="image3" alt="Пример extraction terminal">
+          <figcaption>Пример extraction terminal. Источник изображения: SmartWorld review screenshot.</figcaption>
+        </figure>
+        <ul>
+          <li>За 20-30 м до точки перестаньте бежать и послушайте.</li>
+          <li>Проверьте очевидные подходы и окна/высоту.</li>
+          <li>Один вызывает/активирует, второй держит самый опасный сектор.</li>
+          <li>После вызова лифта не стойте на панели: звук привлекает ARC и Raiders.</li>
+          <li>Если начинается плохой бой и лут важнее — smoke/смена угла/отход лучше "честной дуэли".</li>
+          <li>Не оставляйте основной extract на последние минуты без необходимости.</li>
+        </ul>
+        <div class="callout">
+          <span class="lbl">DAM</span>
+          <p>По данным текущего beginner guide wiki, вызов лифта занимает около 45 секунд. Считайте эти секунды частью боя за выход, а не "ожиданием".</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="s9">
+      <button class="sec-h"><span class="num">09</span><h3>Workshop: где крафт и где улучшения</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <figure>
+          <img data-img="image4" alt="Workshop: нижняя лента — станции">
+          <figcaption>Workshop: нижняя лента — станции. Исходный скриншот: AltChar.</figcaption>
+        </figure>
+        <p>В Workshop выбираете станцию, затем смотрите CRAFTING и LEVEL UP. Используйте tracking ресурсов для текущего upgrade/recipe — это превращает случайный лут в конкретный список покупок.</p>
+        <figure>
+          <img data-img="image5" alt="Пример LEVEL UP Gunsmith">
+          <figcaption>Пример LEVEL UP Gunsmith: требуемые материалы показаны прямо в UI. Скриншот: Shacknews.</figcaption>
+        </figure>
+        <div class="callout warn">
+          <span class="lbl">НЕ РАСПЫЛЯЙТЕСЬ</span>
+          <p>Не пытайтесь одновременно поднять все станции. Для дуо-новичков лучше довести базовую экономику до состояния, где можно повторять дешёвые loadouts, и только потом инвестировать в более узкие станции.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="s10">
+      <button class="sec-h"><span class="num">10</span><h3>Маршрут Workshop на первые часы</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <p>Практичный порядок: сначала открыть дешёвые базовые станции, затем Refiner до того, как начнёте массово упираться в компоненты lvl 2/3.</p>
+        <div class="tw"><table>
+          <thead><tr><th>Шаг</th><th>Станция</th><th>Требования</th><th>Зачем</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Gear Bench 1</td><td>25 Plastic Parts + 30 Fabric</td><td>Combat/Looting/Tactical Mk.1, Light/Medium Shield</td></tr>
+            <tr><td>2</td><td>Gunsmith 1</td><td>20 Metal Parts + 30 Rubber Parts</td><td>Базовые оружия и mods</td></tr>
+            <tr><td>3</td><td>Refiner 1</td><td>60 Metal Parts + 5 ARC Powercells</td><td>Electrical/Mechanical Components, Durable Cloth, Crude Explosives</td></tr>
+            <tr><td>4</td><td>Gear Bench 2</td><td>3 Power Cable + 5 Electrical Components + 5 Hornet Driver</td><td>Mk.2 augments + Heavy Shield</td></tr>
+            <tr><td>5</td><td>Gunsmith 2</td><td>3 Rusted Tools + 5 Mechanical Components + 8 Wasp Driver</td><td>Osprey/Rascal/Torrente/Venator/Arpeggio + mods II</td></tr>
+            <tr><td>6</td><td>Refiner 2</td><td>3 Toaster + 5 ARC Motion Core + 8 Fireball Burner</td><td>Advanced Electrical/Mechanical Components и др.</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout">
+          <span class="lbl">КОРРЕКЦИЯ МАРШРУТА</span>
+          <p>Refiner не обязан быть самой первой станцией. Но после Gear Bench 1 / Gunsmith 1 он быстро становится инфраструктурой для следующих уровней. Не откладывайте его надолго.</p>
+        </div>
+        <p class="src">Требования проверены по ARC Raiders Wiki Workshop, ред. 20.07.2026.</p>
+      </div>
+    </section>
+
+    <section id="s11">
+      <button class="sec-h"><span class="num">11</span><h3>Эти предметы научитесь узнавать глазами</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <figure>
+          <img data-img="image6" alt="Иконки предметов">
+          <figcaption>Иконки вырезаны из community reference sheet только для визуального распознавания. Количества на исходном sheet НЕ используются в этом гайде.</figcaption>
+        </figure>
+        <h4>Что не продавать автоматически</h4>
+        <ul>
+          <li>Wasp Driver — Gunsmith 2.</li>
+          <li>Hornet Driver — Gear Bench 2.</li>
+          <li>Power Cable — Gear Bench 2.</li>
+          <li>Electrical Components — Gear Bench 2 и другие станции.</li>
+          <li>Mechanical Components — Gunsmith 2 и другие рецепты.</li>
+          <li>Toaster + ARC Motion Core + Fireball Burner — Refiner 2.</li>
+          <li>ARC Powercell и ARC Alloy — частые bottleneck-материалы ранней экономики.</li>
+          <li>ARC Motion Core нужен Refiner 2; на визуальном sheet выше его НЕТ — не путайте с Pop Trigger.</li>
+          <li>Любой неизученный Blueprint — постоянный доступ к рецепту после успешного extract.</li>
+        </ul>
+        <div class="callout cool">
+          <span class="lbl">TRACK RESOURCES</span>
+          <p>Перед рейдом отметьте апгрейд/рецепт tracking. Тогда вам не нужно помнить сотню иконок: вы ищете конкретные 3-5 позиций.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="s12">
+      <button class="sec-h"><span class="num">12</span><h3>Два loadout-профиля вместо "одного лучшего билда"</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <figure>
+          <img data-img="image7" alt="Примеры Looting Mk.1, Combat Mk.1, Ferro I, Stitcher I">
+          <figcaption>Примеры внешнего вида Looting Mk.1, Combat Mk.1, Ferro I и Stitcher I.</figcaption>
+        </figure>
+        <div class="tw"><table>
+          <thead><tr><th>Рейд</th><th>Augment / shield</th><th>Оружие</th><th>Логика</th></tr></thead>
+          <tbody>
+            <tr><td>ФАРМ / КВЕСТ</td><td>Looting Mk.1 + Light Shield</td><td>Ferro + Stitcher или один дешёвый ствол</td><td>Больше места; потеря дёшева</td></tr>
+            <tr><td>ОПАСНЫЙ КВЕСТ</td><td>Combat Mk.1 + Medium Shield</td><td>Дешёвое проверенное оружие</td><td>Больше защиты, меньше акцент на loot</td></tr>
+            <tr><td>ЭКОНОМИЧЕСКИЙ RESET</td><td>Free Loadout</td><td>Что выдаст игра</td><td>Нулевая цена; без Safe Pocket</td></tr>
+          </tbody>
+        </table></div>
+        <p>Ferro использует Heavy Ammo и полезен против ARC-armor; Stitcher — быстрый backup на ближней дистанции. В quick-use держите Bandages и Shield Rechargers; Smoke — один из самых полезных инструментов выхода из плохого контакта.</p>
+      </div>
+    </section>
+
+    <section id="s13">
+      <button class="sec-h"><span class="num">13</span><h3>Skills: сначала мобильность, потому что вы пока учитесь выживать</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <figure>
+          <img data-img="image8" alt="Skill Tree: Conditioning / Mobility / Survival">
+          <figcaption>Skill Tree: Conditioning / Mobility / Survival. Исходный скриншот: Epic Games Store guide.</figcaption>
+        </figure>
+        <h4>Стартовая последовательность</h4>
+        <p>Разумный базис: Nimble Climber → Marathon Runner → Youthful Lungs. После ~15 очков в Mobility уже есть смысл глубже уходить в Survival или адаптировать дерево под то, что реально мешает вашему дуо.</p>
+        <div class="tw"><table>
+          <thead><tr><th>Skill</th><th>Что даёт</th></tr></thead>
+          <tbody>
+            <tr><td>Nimble Climber</td><td>Быстрее climb/vault</td></tr>
+            <tr><td>Marathon Runner</td><td>Меньше расход stamina при движении</td></tr>
+            <tr><td>Youthful Lungs</td><td>Больше max stamina (~24% по текущим тестам wiki)</td></tr>
+            <tr><td>Carry The Momentum</td><td>После Sprint Dodge Roll короткое окно sprint без расхода stamina; требует 15 очков Mobility</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout warn">
+          <span class="lbl">ПОЧЕМУ НЕ "PVP BUILD"</span>
+          <p>Сейчас ваша главная потеря - не 4% урона. Это плохой маршрут, поздний отход и невозможность быстро сменить угол. Mobility исправляет именно эту нижнюю планку.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="s14">
+      <button class="sec-h"><span class="num">14</span><h3>Stash, продажа и Scrappy</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <h4>Первые деньги - в пространство</h4>
+        <div class="tw"><table>
+          <thead><tr><th>Stash</th><th>Цена апгрейда</th><th>Суммарно</th></tr></thead>
+          <tbody>
+            <tr><td>64 → 88</td><td>5 000</td><td>5 000</td></tr>
+            <tr><td>88 → 112</td><td>10 000</td><td>15 000</td></tr>
+            <tr><td>112 → 136</td><td>15 000</td><td>30 000</td></tr>
+          </tbody>
+        </table></div>
+        <p>Для новичка 112-136 слотов обычно полезнее раннего дорогого оружия: маленький stash заставляет продавать будущие quest/workshop bottlenecks.</p>
+        <h4>Что продавать</h4>
+        <ul>
+          <li>Trinkets/предметы с основной функцией "продать".</li>
+          <li>Лишние дешёвые стволы — не храните девять одинаковых "на всякий случай".</li>
+          <li>Избыточные craftable consumables, которые легко восстановить.</li>
+        </ul>
+        <h4>Scrappy</h4>
+        <p>Scrappy приносит Metal Parts, Fabric, Plastic Parts, Chemicals, Rubber Parts и Seeds, пока вы играете Topside. Он копит ресурсы только за 5 раундов, после чего его нужно забрать, иначе сбор останавливается. Максимальный time-based tier достигается после 15 минут в раунде.</p>
+        <div class="callout cool">
+          <span class="lbl">ПРИВЫЧКА</span>
+          <p>После серии рейдов: Scrappy → stash → продать лишнее → проверить следующий Workshop upgrade → поставить tracking.</p>
+        </div>
+        <p class="src">Stash и Scrappy: ARC Raiders Wiki, актуальные страницы на август 2026.</p>
+      </div>
+    </section>
+
+    <section id="s15">
+      <button class="sec-h"><span class="num">15</span><h3>Конкретный маршрут на первые ~10 часов</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <div class="tw"><table>
+          <thead><tr><th>Время</th><th>Главная цель</th><th>Как играть</th></tr></thead>
+          <tbody>
+            <tr><td>0-2 ч</td><td>Квесты + освоение Dam + базовые mats</td><td>Free Loadout; не начинать PvP; короткие extracts</td></tr>
+            <tr><td>2-4 ч</td><td>Gear Bench 1 + Gunsmith 1</td><td>Plastic/Fabric → Metal/Rubber; дешёвые custom loadouts</td></tr>
+            <tr><td>3-5 ч</td><td>Stash 88→112→136</td><td>Продавать trinkets/лишние low-tier guns; не хранить всё</td></tr>
+            <tr><td>4-6 ч</td><td>Refiner 1</td><td>Собрать 60 Metal + 5 ARC Powercells; начать делать components</td></tr>
+            <tr><td>5-8 ч</td><td>Gear Bench 2</td><td>Power Cable + Electrical Components + Hornet Drivers</td></tr>
+            <tr><td>6-10 ч</td><td>Gunsmith 2 / Refiner 2</td><td>Wasp Drivers + Mechanical Components; затем Toaster/Motion Core/Fireball Burner</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Пример одного вечера</h4>
+        <ul>
+          <li>Рейд 1: Free → квест → extract.</li>
+          <li>Рейд 2: Free → Plastic/Fabric → extract.</li>
+          <li>Рейд 3: дешёвый custom → Metal/Rubber + quest.</li>
+          <li>Рейд 4: Looting Mk.1 → materials для текущего track.</li>
+          <li>Рейд 5: целевой Hornet/Wasp farm, только если нужен Driver.</li>
+          <li>После 3-5 рейдов: Scrappy, stash, sell, workshop, новый track.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="s16">
+      <button class="sec-h"><span class="num">16</span><h3>Что делать после 3 смертей подряд</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <div class="callout warn">
+          <span class="lbl">НЕ ДЕЛАТЬ</span>
+          <p>Не доставать дорогой комплект "чтобы наконец выиграть". Цена экипировки не исправляет плохой тайминг, угол и знание карты.</p>
+        </div>
+        <h4>Reset-протокол</h4>
+        <p><span class="step">1.</span> Free Loadout или почти пустой дешёвый Custom.</p>
+        <p><span class="step">2.</span> Одна простая задача рядом со spawn/маршрутом.</p>
+        <p><span class="step">3.</span> Не искать PvP и не идти на чужую стрельбу.</p>
+        <p><span class="step">4.</span> Получили 2-3 полезных stacks/quest progress → extract.</p>
+        <p><span class="step">5.</span> Повторить 1-2 раза, пока снова не появится запас.</p>
+        <p><span class="step">6.</span> Только потом возвращаться к опасным задачам.</p>
+        <h4>Разбор смерти за 20 секунд</h4>
+        <div class="tw"><table>
+          <thead><tr><th>Вопрос</th><th>Если "да" — что исправлять</th></tr></thead>
+          <tbody>
+            <tr><td>Мы вошли в бой без цели?</td><td>Решение о контакте</td></tr>
+            <tr><td>Мы стояли рядом?</td><td>Разнесение углов</td></tr>
+            <tr><td>Оба лутали?</td><td>Роли и дисциплина</td></tr>
+            <tr><td>Слишком поздно пошли на extract?</td><td>Лимит жадности</td></tr>
+            <tr><td>Ресали под прицелом?</td><td>Сначала контроль, потом revive</td></tr>
+            <tr><td>Потеря слишком болезненна?</td><td>Loadout дороже вашего текущего skill floor</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="s17">
+      <button class="sec-h"><span class="num">17</span><h3>Когда вы готовы специально учить PvP</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <p>Не ждите "идеального аккаунта". Но сначала добейтесь, чтобы PvP-поражение не ломало всю сессию.</p>
+        <ul>
+          <li>Gear Bench 2 открыт.</li>
+          <li>Gunsmith 1-2 открыт; Refiner работает.</li>
+          <li>Stash минимум 112, лучше 136+.</li>
+          <li>Есть несколько дешёвых повторяемых комплектов.</li>
+          <li>Dam не выглядит лабиринтом: знаете 2-3 маршрута и exits.</li>
+          <li>Умеете спокойно убить одиночный Wasp/Hornet.</li>
+          <li>Спокойные loot-рейды чаще заканчиваются extract, чем хаотичным вайпом.</li>
+          <li>После смерти можете сразу собрать следующий рабочий set.</li>
+        </ul>
+        <h4>Как учить PvP отдельно</h4>
+        <p>Выделите 2-3 рейда, где главная цель - не loot, а контакт: услышать людей → получить информацию → занять два угла → попробовать закончить бой. Тогда поражение даёт понятный урок, а не смешивается с квестами, Workshop и жадностью.</p>
+        <div class="callout cool">
+          <span class="lbl">КРИТЕРИЙ ПРОГРЕССА</span>
+          <p>Вы становитесь сильнее не тогда, когда однажды убили опытного игрока, а когда перестали регулярно отдавать бой до первого выстрела: плохим маршрутом, шумом, общей позицией и поздним extract.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="s18">
+      <button class="sec-h"><span class="num">18</span><h3>Чеклист дуо перед кнопкой PLAY</h3><span class="caret">▾</span></button>
+      <div class="sec-body">
+        <ul class="check">
+          <li>У нас есть ОДНА основная цель рейда?</li>
+          <li>Мы понимаем, зачем берём Free или Custom?</li>
+          <li>Если ищем blueprint/quest item — у нас есть Safe Pocket?</li>
+          <li>Мы знаем хотя бы один запасной путь к extract?</li>
+          <li>Кто первым лутает, кто смотрит?</li>
+          <li>Мы согласны не начинать бессмысленный PvP?</li>
+          <li>Какой loot означает "всё, выходим"?</li>
+        </ul>
+        <h4>Источники и актуальность</h4>
+        <p>Гайд собран и перепроверен 10 августа 2026. ARC Raiders - live-service, поэтому matchmaking-тесты, рецепты и требования Workshop могут меняться. Если UI игры расходится с этим PDF, приоритет у текущего UI/официального patch note.</p>
+        <ul class="srclist">
+          <li>Embark Studios — Live Update 1.39.0: <a href="https://arcraiders.com/news/live-update-1-39-0" target="_blank" rel="noopener">https://arcraiders.com/news/live-update-1-39-0</a></li>
+          <li>Embark Studios — Live Update 1.36.0: <a href="https://arcraiders.com/news/live-update-1-36-0" target="_blank" rel="noopener">https://arcraiders.com/news/live-update-1-36-0</a></li>
+          <li>Embark — Notes on the Matchmaking System: <a href="https://arcraiders.com/news/notes-on-the-matchmaking-system" target="_blank" rel="noopener">https://arcraiders.com/news/notes-on-the-matchmaking-system</a></li>
+          <li>ARC Raiders Wiki — Workshop: <a href="https://arcraiders.wiki/wiki/Workshop" target="_blank" rel="noopener">https://arcraiders.wiki/wiki/Workshop</a></li>
+          <li>ARC Raiders Wiki — Loadout: <a href="https://arcraiders.wiki/wiki/Loadout" target="_blank" rel="noopener">https://arcraiders.wiki/wiki/Loadout</a></li>
+          <li>ARC Raiders Wiki — Skills: <a href="https://arcraiders.wiki/wiki/Skills" target="_blank" rel="noopener">https://arcraiders.wiki/wiki/Skills</a></li>
+          <li>ARC Raiders Wiki — ARC: <a href="https://arcraiders.wiki/wiki/ARC" target="_blank" rel="noopener">https://arcraiders.wiki/wiki/ARC</a></li>
+          <li>ARC Raiders Wiki — Getting Started: <a href="https://arcraiders.wiki/wiki/Getting_Started" target="_blank" rel="noopener">https://arcraiders.wiki/wiki/Getting_Started</a></li>
+          <li>ARC Raiders Wiki — Speranza/Stash: <a href="https://arcraiders.wiki/wiki/Speranza" target="_blank" rel="noopener">https://arcraiders.wiki/wiki/Speranza</a></li>
+          <li>ARC Raiders Wiki — Scrappy: <a href="https://arcraiders.wiki/wiki/Scrappy" target="_blank" rel="noopener">https://arcraiders.wiki/wiki/Scrappy</a></li>
+          <li>Epic Games Store — beginner tips (UI screenshots): ARC Raiders guide / 12 tips</li>
+          <li>Image references: AltChar, Shacknews, GamesRadar/PC Gamer, MetaForge, Rectify Gaming, Gfinity Esports, SmartWorld; all game imagery belongs to Embark Studios AB.</li>
+        </ul>
+        <div class="callout">
+          <span class="lbl">ОДНА ФРАЗА НА ВЫХОД</span>
+          <p>Сначала станьте дуо, которое стабильно возвращается домой. Потом - дуо, которое решает, кто ещё вернётся домой.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="empty" id="empty" style="display:none">Ничего не найдено. Уберите часть запроса или проверьте раскладку.</div>
+
+  </main>
+</div>
+
+<div class="lbx" id="lbx"><button class="close">Закрыть · Esc</button><img id="lbxi" alt=""></div>
+<button class="totop" id="totop" aria-label="Наверх">↑</button>
+
+<script>
+const IMG = {"image1": "img/image1.jpg", "image2": "img/image2.jpg", "image3": "img/image3.jpg", "image4": "img/image4.jpg", "image5": "img/image5.jpg", "image6": "img/image6.jpg", "image7": "img/image7.jpg", "image8": "img/image8.jpg"};
+document.querySelectorAll('img[data-img]').forEach(el=>{
+  const k = el.getAttribute('data-img');
+  if(IMG[k]) el.src = IMG[k];
+  el.loading = 'lazy';
+});
+
+const secs   = [...document.querySelectorAll('section')];
+const links  = [...document.querySelectorAll('.rail a')];
+const bodies = new Map(secs.map(s=>[s.id, s.querySelector('.sec-body').innerHTML]));
+const heads  = new Map(secs.map(s=>[s.id, s.querySelector('.sec-h h3').innerHTML]));
+const q      = document.getElementById('q');
+const hint   = document.getElementById('hint');
+const empty  = document.getElementById('empty');
+const hero   = document.getElementById('hero');
+
+/* --- поиск --- */
+const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function mark(node, re){
+  if(node.nodeType === 3){
+    const t = node.nodeValue;
+    if(!re.test(t)) return 0;
+    re.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0, m, n = 0;
+    while((m = re.exec(t)) !== null){
+      frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+      const el = document.createElement('mark');
+      el.textContent = m[0];
+      frag.appendChild(el);
+      last = m.index + m[0].length; n++;
+      if(m[0].length === 0) re.lastIndex++;
+    }
+    frag.appendChild(document.createTextNode(t.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+    return n;
+  }
+  if(node.nodeType !== 1 || ['SCRIPT','STYLE','MARK'].includes(node.tagName)) return 0;
+  let n = 0;
+  [...node.childNodes].forEach(c => n += mark(c, re));
+  return n;
+}
+function reset(){
+  secs.forEach(s=>{
+    s.querySelector('.sec-body').innerHTML = bodies.get(s.id);
+    s.querySelector('.sec-h h3').innerHTML = heads.get(s.id);
+    s.classList.remove('hidden');
+  });
+  links.forEach(a=>a.classList.remove('hidden'));
+  hero.style.display = '';
+  empty.style.display = 'none';
+  hint.textContent = '/'; hint.classList.remove('count');
+  document.querySelectorAll('img[data-img]').forEach(el=>{
+    const k = el.getAttribute('data-img'); if(IMG[k]) el.src = IMG[k];
+  });
+}
+let timer;
+q.addEventListener('input', ()=>{
+  clearTimeout(timer);
+  timer = setTimeout(run, 130);
+});
+function run(){
+  const v = q.value.trim();
+  reset();
+  if(v.length < 2){ if(v.length===0) return; return; }
+  const re = new RegExp(esc(v), 'gi');
+  let found = 0, hits = 0;
+  hero.style.display = 'none';
+  secs.forEach(s=>{
+    const n = mark(s.querySelector('.sec-body'), re) + mark(s.querySelector('.sec-h h3'), re);
+    if(n === 0){
+      s.classList.add('hidden');
+      links.find(a=>a.getAttribute('href') === '#'+s.id).classList.add('hidden');
+    } else { found++; hits += n; s.classList.remove('collapsed'); }
+  });
+  hint.textContent = found ? hits + ' / ' + found : '0';
+  hint.classList.add('count');
+  empty.style.display = found ? 'none' : 'block';
+}
+q.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){ q.value=''; reset(); q.blur(); }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === '/' && document.activeElement !== q){ e.preventDefault(); q.focus(); q.select(); }
+});
+
+/* --- сворачивание --- */
+secs.forEach(s=>{
+  s.querySelector('.sec-h').addEventListener('click', ()=>s.classList.toggle('collapsed'));
+});
+const fold = document.getElementById('fold');
+fold.addEventListener('click', ()=>{
+  const collapse = !secs.every(s=>s.classList.contains('collapsed'));
+  secs.forEach(s=>s.classList.toggle('collapsed', collapse));
+  fold.classList.toggle('on', collapse);
+  fold.querySelector('.btn-txt').textContent = collapse ? ' Развернуть' : ' Свернуть';
+});
+
+/* --- размер шрифта --- */
+let fs = 16;
+const setFs = v =>{ fs = Math.min(22, Math.max(13, v)); document.documentElement.style.setProperty('--fs', fs+'px'); };
+document.getElementById('fup').onclick   = ()=>setFs(fs+1);
+document.getElementById('fdown').onclick = ()=>setFs(fs-1);
+
+/* --- картинки --- */
+const imgt = document.getElementById('imgt');
+imgt.addEventListener('click', ()=>{
+  const off = document.body.classList.toggle('no-img');
+  imgt.classList.toggle('on', off);
+});
+
+/* --- навигация --- */
+const burger = document.getElementById('burger'), scrim = document.getElementById('scrim');
+burger.onclick = ()=>document.body.classList.toggle('nav-open');
+scrim.onclick  = ()=>document.body.classList.remove('nav-open');
+links.forEach(a=>a.addEventListener('click', ()=>document.body.classList.remove('nav-open')));
+document.querySelectorAll('.chip').forEach(c=>{
+  c.onclick = ()=>{
+    const s = document.getElementById(c.dataset.go);
+    s.classList.remove('collapsed');
+    s.scrollIntoView({behavior:'smooth', block:'start'});
+  };
+});
+
+/* --- активный раздел --- */
+const io = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#'+e.target.id));
+    }
+  });
+}, {rootMargin:'-115px 0px -70% 0px'});
+secs.forEach(s=>io.observe(s));
+
+/* --- увеличение картинок --- */
+const lbx = document.getElementById('lbx'), lbxi = document.getElementById('lbxi');
+document.addEventListener('click', e=>{
+  const im = e.target.closest('figure img');
+  if(im){ lbxi.src = im.src; lbx.classList.add('open'); return; }
+  if(e.target.closest('.lbx')) lbx.classList.remove('open');
+});
+addEventListener('keydown', e=>{ if(e.key==='Escape') lbx.classList.remove('open'); });
+
+/* --- наверх --- */
+const totop = document.getElementById('totop');
+addEventListener('scroll', ()=>totop.classList.toggle('show', scrollY > 900), {passive:true});
+totop.onclick = ()=>scrollTo({top:0, behavior:'smooth'});
+</script>
+</body>
+</html>
